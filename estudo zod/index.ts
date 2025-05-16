@@ -1,14 +1,20 @@
-import { string, z,} from "zod"
+import {nullable, z} from "zod"
 
-const userSchema = z.object({
-  email : z.string().email(),
-  age: z.number().min(18).max(105),
-  apelido: z.string().min(2).optional()
+// zod mapa
+const cartSchema = z.object({
+  clientId : z.string().uuid(),
+  iten: z.array(z.object({
+      name: z.string().min(3),
+      price: z.number().positive(),
+      qtd: z.number().int().min(1),
+      description : z.string().nullable(),
+      categories: z.array(z.string()).min(1)
+    }),)
 })
 
-const user = {
-  email: "valido@gmail.com",
-  idade: 123,
+const carrinho = {
+
 }
 
-console.log(userSchema.safeParse(user))
+
+const {success, error} = cartSchema.safeParse("carrinho")
